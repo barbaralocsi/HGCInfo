@@ -1,5 +1,6 @@
 package hu.bme.aut.hgcinfo.network;
 
+import hu.bme.aut.hgcinfo.model.player.PlayerList;
 import hu.bme.aut.hgcinfo.model.team.Team;
 import hu.bme.aut.hgcinfo.model.team.TeamList;
 import okhttp3.OkHttpClient;
@@ -38,7 +39,13 @@ public class NetworkManager {
     }
 
     public Call<TeamList> getAllTeams(Integer regionId) {
-        Call<TeamList> tl =teamApi.getAllTeams(regionId);
+        return teamApi.getAllTeams(regionId);
+    }
+
+    public Call<PlayerList> getPlayersOfTeam(Integer teamId) {
+        Call<PlayerList> tl =teamApi.getPlayersOfTeam(teamId);
         return tl;
     }
+
+
 }

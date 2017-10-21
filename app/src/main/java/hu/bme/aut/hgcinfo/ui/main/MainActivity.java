@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                         showDetailsIntent.setClass(MainActivity.this,
                                 TeamDetailsActivity.class);
                         showDetailsIntent.putExtra(
-                                TeamDetailsActivity.EXTRA_TEAM_ID, team.id);
+                                TeamDetailsActivity.EXTRA_TEAM_ID, team);
                         startActivity(showDetailsIntent);
                     }
                 }, MainActivity.this);

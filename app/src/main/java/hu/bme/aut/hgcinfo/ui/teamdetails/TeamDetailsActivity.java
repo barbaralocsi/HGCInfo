@@ -1,16 +1,22 @@
 package hu.bme.aut.hgcinfo.ui.teamdetails;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import hu.bme.aut.hgcinfo.R;
+import hu.bme.aut.hgcinfo.model.player.Player;
+import hu.bme.aut.hgcinfo.model.player.PlayerList;
 import hu.bme.aut.hgcinfo.model.team.Team;
 import hu.bme.aut.hgcinfo.network.NetworkManager;
 import retrofit2.Call;
@@ -22,12 +28,17 @@ public class TeamDetailsActivity extends AppCompatActivity{
     private static final String TAG = "TeamDetailsActivity";
     public static final String EXTRA_TEAM_ID = "extra.team_id";
 
-    private Team teamData = null;
+    //private Team teamData = null;
 
-    private int team;
+    private Team team;
 
-    private TextView tvTeamName;
-    private ImageView tvTeamIcon;
+    //private TextView tvTeamName;
+    //private ImageView tvTeamIcon;
+
+    private LinearLayout listOfRows;
+    private LayoutInflater inflater;
+
+    private PlayerList playerList = null;
 
 
     @Override
@@ -35,17 +46,21 @@ public class TeamDetailsActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_details);
 
-        team = getIntent().getIntExtra(EXTRA_TEAM_ID, 0);
+        //team = getIntent().getIntExtra(EXTRA_TEAM_ID, 0);
+        team = (Team) getIntent().getSerializableExtra(EXTRA_TEAM_ID);
 
 
         //TODO fix this
-        getSupportActionBar().setTitle("test");
+        getSupportActionBar().setTitle(team.name);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        listOfRows = (LinearLayout) findViewById(R.id.list_of_rows);
+        inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        tvTeamName = (TextView) findViewById(R.id.tvTeamName);
 
-        tvTeamIcon = (ImageView) findViewById(R.id.tvTeamIcon);
+        //tvTeamName = (TextView) findViewById(R.id.tvTeamName);
+
+        //tvTeamIcon = (ImageView) findViewById(R.id.tvTeamIcon);
         //displayTeamData();
 
     }
@@ -61,21 +76,35 @@ public class TeamDetailsActivity extends AppCompatActivity{
     }
 
     private void displayTeamData() {
-        tvTeamName.setText(teamData.name);
-        Glide.with(this)
-                .load(teamData.logo.big)
-                .crossFade()
-                .into(tvTeamIcon);
+
+        for (Player p: playerList.results) {
+            View rowItem = inflater.inflate(R.layout.player_row, null);
+
+            ImageView photo = (ImageView) rowItem.findViewById(R.id.player_row_photo);
+            TextView nickName = (TextView) rowItem.findViewById(R.id.player_row_nick);
+            TextView realName = (TextView) rowItem.findViewById(R.id.player_row_real);
+
+            Glide.with(this)
+                    .load(p.photo.medium)
+                    .crossFade()
+                    .into(photo);
+
+            nickName.setText(p.nickname);
+            realName.setText(p.realname);
+
+            listOfRows.addView(rowItem);
+
+        }
     }
 
     private void loadTeamData() {
-        NetworkManager.getInstance().getTeam(team).enqueue(new Callback<Team>() {
+        NetworkManager.getInstance().getPlayersOfTeam(team.id).enqueue(new Callback<PlayerList>() {
             @Override
-            public void onResponse(Call<Team> call,
-                                   Response<Team> response) {
+            public void onResponse(Call<PlayerList> call,
+                                   Response<PlayerList> response) {
                 Log.d(TAG, "onResponse: " + response.code());
                 if (response.isSuccessful()) {
-                    teamData = response.body();
+                    playerList = response.body();
                     displayTeamData();
                 } else {
                     Toast.makeText(TeamDetailsActivity.this,
@@ -85,7 +114,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
             }
 
             @Override
-            public void onFailure(Call<Team> call, Throwable t) {
+            public void onFailure(Call<PlayerList> call, Throwable t) {
                 t.printStackTrace();
                 Toast.makeText(TeamDetailsActivity.this,
                         "Error in network request, check LOG",
