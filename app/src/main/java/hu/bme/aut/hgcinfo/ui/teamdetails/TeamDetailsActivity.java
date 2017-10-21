@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import hu.bme.aut.hgcinfo.R;
-import hu.bme.aut.hgcinfo.model.Team;
+import hu.bme.aut.hgcinfo.model.team.Team;
 import hu.bme.aut.hgcinfo.network.NetworkManager;
 import retrofit2.Call;
 import retrofit2.Callback;

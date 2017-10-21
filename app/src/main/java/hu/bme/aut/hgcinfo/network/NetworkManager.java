@@ -1,7 +1,7 @@
 package hu.bme.aut.hgcinfo.network;
 
-import hu.bme.aut.hgcinfo.model.Team;
-import hu.bme.aut.hgcinfo.model.TeamList;
+import hu.bme.aut.hgcinfo.model.team.Team;
+import hu.bme.aut.hgcinfo.model.team.TeamList;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;

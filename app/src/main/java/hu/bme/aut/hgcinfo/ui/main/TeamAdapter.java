@@ -1,5 +1,6 @@
 package hu.bme.aut.hgcinfo.ui.main;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,21 +8,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import hu.bme.aut.hgcinfo.R;
-import hu.bme.aut.hgcinfo.model.Team;
+import hu.bme.aut.hgcinfo.model.team.Team;
 
 public class TeamAdapter extends
   RecyclerView.Adapter<TeamAdapter.TeamViewHolder> {
 
     private final List<Team> teams;
     private OnTeamSelectedListener listener;
+    private Context mContext;
 
-    public TeamAdapter(OnTeamSelectedListener listener) {
+    public TeamAdapter(OnTeamSelectedListener listener, Context mContext) {
         this.listener = listener;
         teams = new ArrayList<>();
+        this.mContext = mContext;
     }
 
     @Override
@@ -37,6 +42,12 @@ public class TeamAdapter extends
     public void onBindViewHolder(TeamViewHolder holder, int position) {
         holder.position = position;
         holder.nameTextView.setText(teams.get(position).name);
+
+        Glide.with(mContext)
+                .load(teams.get(position).logo.small)
+                .crossFade()
+                .into(holder.imageView);
+
     }
 
     @Override
@@ -90,4 +101,6 @@ public void removeCity(int position) {
             });
         }
     }
+
+
 }

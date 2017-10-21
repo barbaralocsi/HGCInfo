@@ -1,4 +1,4 @@
-package hu.bme.aut.hgcinfo.model;
+package hu.bme.aut.hgcinfo.model.team;
 
 import java.util.List;
 

@@ -13,8 +13,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import hu.bme.aut.hgcinfo.R;
-import hu.bme.aut.hgcinfo.model.Team;
-import hu.bme.aut.hgcinfo.model.TeamList;
+import hu.bme.aut.hgcinfo.model.team.Team;
+import hu.bme.aut.hgcinfo.model.team.TeamList;
 import hu.bme.aut.hgcinfo.network.NetworkManager;
 import hu.bme.aut.hgcinfo.ui.teamdetails.TeamDetailsActivity;
 import retrofit2.Call;
@@ -82,11 +82,11 @@ public class MainActivity extends AppCompatActivity {
                                 TeamDetailsActivity.EXTRA_TEAM_ID, team.id);
                         startActivity(showDetailsIntent);
                     }
-                });
-        Team ds = new Team();
-        ds.id=142;
-        ds.name = "DS";
-        adapter.addTeam(ds);
+                }, MainActivity.this);
+        //Team ds = new Team();
+        //ds.id=142;
+        //ds.name = "DS";
+        //adapter.addTeam(ds);
         recyclerView.setAdapter(adapter);
     }
 
