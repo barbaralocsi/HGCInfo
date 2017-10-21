@@ -8,17 +8,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import hu.bme.aut.hgcinfo.R;
+import hu.bme.aut.hgcinfo.model.Team;
+import hu.bme.aut.hgcinfo.model.TeamList;
+import hu.bme.aut.hgcinfo.network.NetworkManager;
 import hu.bme.aut.hgcinfo.ui.teamdetails.TeamDetailsActivity;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    //private TextView mTextMessage;
+    private static final String TAG = "MainActivity";
 
     private RecyclerView recyclerView;
     private TeamAdapter adapter;
+    private TeamList teamList = null;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -65,16 +74,51 @@ public class MainActivity extends AppCompatActivity {
         adapter = new TeamAdapter(
                 new OnTeamSelectedListener() {
                     @Override
-                    public void onTeamSelected(Integer team) {
+                    public void onTeamSelected(Team team) {
                         Intent showDetailsIntent = new Intent();
                         showDetailsIntent.setClass(MainActivity.this,
                                 TeamDetailsActivity.class);
                         showDetailsIntent.putExtra(
-                                TeamDetailsActivity.EXTRA_TEAM_ID, team);
+                                TeamDetailsActivity.EXTRA_TEAM_ID, team.id);
                         startActivity(showDetailsIntent);
                     }
                 });
-        adapter.addTeam(142);
+        Team ds = new Team();
+        ds.id=142;
+        ds.name = "DS";
+        adapter.addTeam(ds);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadTeams();
+    }
+
+    private void loadTeams() {
+        NetworkManager.getInstance().getAllTeams(1).enqueue(new Callback<TeamList>() {
+            @Override
+            public void onResponse(Call<TeamList> call,
+                                   Response<TeamList> response) {
+                Log.d(TAG, "onResponse: " + response.code());
+                if (response.isSuccessful()) {
+                    teamList = response.body();
+                    adapter.addTeams(teamList.results);
+                } else {
+                    Toast.makeText(MainActivity.this,
+                            "Error: "+response.message(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TeamList> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(MainActivity.this,
+                        "Error in network request, check LOG",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

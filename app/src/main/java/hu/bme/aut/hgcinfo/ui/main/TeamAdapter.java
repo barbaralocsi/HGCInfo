@@ -11,11 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hu.bme.aut.hgcinfo.R;
+import hu.bme.aut.hgcinfo.model.Team;
 
 public class TeamAdapter extends
   RecyclerView.Adapter<TeamAdapter.TeamViewHolder> {
 
-    private final List<Integer> teams;
+    private final List<Team> teams;
     private OnTeamSelectedListener listener;
 
     public TeamAdapter(OnTeamSelectedListener listener) {
@@ -35,7 +36,7 @@ public class TeamAdapter extends
     @Override
     public void onBindViewHolder(TeamViewHolder holder, int position) {
         holder.position = position;
-        holder.nameTextView.setText(teams.get(position).toString());
+        holder.nameTextView.setText(teams.get(position).name);
     }
 
     @Override
@@ -43,10 +44,20 @@ public class TeamAdapter extends
         return teams.size();
     }
 
-    public void addTeam(Integer newTeam) {
+    public void addTeam(Team newTeam) {
         teams.add(newTeam);
         notifyItemInserted(teams.size() - 1);
     }
+
+    public void addTeams(List<Team> newTeams){
+        teams.addAll(newTeams);
+        notifyDataSetChanged();
+        //notifyItemRangeChanged(); ??
+    }
+
+
+
+
 public void removeCity(int position) {
     teams.remove(position);
         notifyItemRemoved(position);
