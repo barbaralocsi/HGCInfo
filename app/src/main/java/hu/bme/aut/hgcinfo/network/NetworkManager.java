@@ -1,7 +1,6 @@
 package hu.bme.aut.hgcinfo.network;
 
 import hu.bme.aut.hgcinfo.model.player.PlayerList;
-import hu.bme.aut.hgcinfo.model.team.Team;
 import hu.bme.aut.hgcinfo.model.team.TeamList;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -34,9 +33,6 @@ public class NetworkManager {
         teamApi = retrofit.create(TeamApi.class);
     }
 
-    public Call<Team> getTeam(Integer teamId) {
-        return teamApi.getTeam(teamId);
-    }
 
     public Call<TeamList> getAllTeams(Integer regionId) {
         return teamApi.getAllTeams(regionId);

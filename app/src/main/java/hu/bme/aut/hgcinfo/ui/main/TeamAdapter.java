@@ -11,9 +11,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import hu.bme.aut.hgcinfo.R;
+import hu.bme.aut.hgcinfo.constants.HGCTeams;
 import hu.bme.aut.hgcinfo.model.team.Team;
 
 public class TeamAdapter extends
@@ -22,11 +24,13 @@ public class TeamAdapter extends
     private final List<Team> teams;
     private OnTeamSelectedListener listener;
     private Context mContext;
+    private int regionId;
 
-    public TeamAdapter(OnTeamSelectedListener listener, Context mContext) {
+    public TeamAdapter(OnTeamSelectedListener listener, Context mContext, int regionId) {
         this.listener = listener;
         teams = new ArrayList<>();
         this.mContext = mContext;
+        this.regionId=regionId;
     }
 
     @Override
@@ -46,8 +50,15 @@ public class TeamAdapter extends
         Glide.with(mContext)
                 .load(teams.get(position).logo.small)
                 .crossFade()
-                .into(holder.imageView);
+                .into(holder.teamIcon);
 
+        int teamId = teams.get(position).id;
+        if(HGCTeams.getHGCTeams(regionId).contains(teamId)){
+            holder.HGCImageView.setImageResource(R.mipmap.ic_hgc);
+        }
+        else{
+            holder.HGCImageView.setImageDrawable(null);
+        }
     }
 
     @Override
@@ -61,7 +72,22 @@ public class TeamAdapter extends
     }
 
     public void addTeams(List<Team> newTeams){
-        teams.addAll(newTeams);
+        // Bring HGC Teams to the front
+        ArrayList<Integer> HGCteamIds = HGCTeams.getHGCTeams(regionId);
+        Iterator<Team> i = newTeams.iterator();
+        ArrayList<Team> HGCTeams = new ArrayList<>();
+        while (i.hasNext()) {
+            Team t = i.next(); // must be called before you can call i.remove()
+            // Do something
+            if(HGCteamIds.contains(t.id)){
+                HGCTeams.add(t);
+                i.remove();
+            }
+        }
+        // HGC teams are in the begining, add the other to it
+        HGCTeams.addAll(newTeams);
+
+        teams.addAll(HGCTeams);
         notifyDataSetChanged();
         //notifyItemRangeChanged(); ??
     }
@@ -81,16 +107,19 @@ public void removeCity(int position) {
 
         int position;
 
+        ImageView HGCImageView;
         TextView nameTextView;
-        ImageView imageView;
+        ImageView teamIcon;
 
         public TeamViewHolder(View itemView) {
             super(itemView);
             nameTextView = 
               (TextView) itemView.findViewById(
               R.id.TeamItemNameTextView);
-            imageView = (ImageView) itemView.findViewById(
+            teamIcon = (ImageView) itemView.findViewById(
               R.id.TeamItemImageView);
+            HGCImageView = (ImageView) itemView.findViewById(
+                    R.id.HGCImageView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

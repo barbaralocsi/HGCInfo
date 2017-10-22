@@ -98,6 +98,10 @@ public class TeamDetailsActivity extends AppCompatActivity{
     }
 
     private void loadTeamData() {
+
+        Toast.makeText(TeamDetailsActivity.this, "API call TeamDetailsActivity",
+                Toast.LENGTH_SHORT).show();
+
         NetworkManager.getInstance().getPlayersOfTeam(team.id).enqueue(new Callback<PlayerList>() {
             @Override
             public void onResponse(Call<PlayerList> call,

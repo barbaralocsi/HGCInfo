@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TeamAdapter adapter;
     private TeamList teamList = null;
+    private int regionId=1;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                                 TeamDetailsActivity.EXTRA_TEAM_ID, team);
                         startActivity(showDetailsIntent);
                     }
-                }, MainActivity.this);
+                }, MainActivity.this,regionId);
         //Team ds = new Team();
         //ds.id=142;
         //ds.name = "DS";
@@ -93,11 +94,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadTeams();
+        if(adapter.getItemCount()<=0) {
+            loadTeams();
+        }
     }
 
     private void loadTeams() {
-        NetworkManager.getInstance().getAllTeams(1).enqueue(new Callback<TeamList>() {
+
+        Toast.makeText(MainActivity.this, "API call MainActivity",
+                Toast.LENGTH_SHORT).show();
+
+        NetworkManager.getInstance().getAllTeams(regionId).enqueue(new Callback<TeamList>() {
             @Override
             public void onResponse(Call<TeamList> call,
                                    Response<TeamList> response) {
