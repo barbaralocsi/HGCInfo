@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         //ds.name = "DS";
         //adapter.addTeam(ds);
         recyclerView.setAdapter(adapter);
+
     }
 
     @Override
@@ -146,4 +147,5 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_teams, menu);
         return true;
     }
+
 }

@@ -134,5 +134,11 @@ public void removeCity(int position) {
         }
     }
 
+    public void update(List<Team> shoppingItems) {
+        teams.clear();
+        teams.addAll(shoppingItems);
+        notifyDataSetChanged();
+    }
+
 
 }
