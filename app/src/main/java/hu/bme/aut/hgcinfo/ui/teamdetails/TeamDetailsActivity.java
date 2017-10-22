@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import hu.bme.aut.hgcinfo.R;
+import hu.bme.aut.hgcinfo.constants.RoleImageFinder;
 import hu.bme.aut.hgcinfo.model.player.Player;
 import hu.bme.aut.hgcinfo.model.player.PlayerList;
 import hu.bme.aut.hgcinfo.model.team.Team;
@@ -83,6 +84,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
             ImageView photo = (ImageView) rowItem.findViewById(R.id.player_row_photo);
             TextView nickName = (TextView) rowItem.findViewById(R.id.player_row_nick);
             TextView realName = (TextView) rowItem.findViewById(R.id.player_row_real);
+            ImageView role = (ImageView) rowItem.findViewById(R.id.player_row_role);
 
             Glide.with(this)
                     .load(p.photo.medium)
@@ -91,6 +93,9 @@ public class TeamDetailsActivity extends AppCompatActivity{
 
             nickName.setText(p.nickname);
             realName.setText(p.realname);
+
+            int roleImageId = RoleImageFinder.findRoleImage(p.role);
+            role.setImageResource(roleImageId);
 
             listOfRows.addView(rowItem);
 
@@ -130,7 +135,9 @@ public class TeamDetailsActivity extends AppCompatActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        loadTeamData();
+        if(playerList == null || playerList.results==null || playerList.results.isEmpty()) {
+            loadTeamData();
+        }
     }
 
 }

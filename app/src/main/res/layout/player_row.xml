@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="4dp">
@@ -11,15 +11,17 @@
         android:layout_width="@dimen/small_player_image_width"
         android:layout_height="@dimen/small_player_image_height"
         tools:src="@android:drawable/ic_menu_camera"
+        android:layout_gravity="center"
         />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/player_row_nick"
@@ -35,4 +37,13 @@
             android:layout_height="wrap_content"
             tools:text="RealName" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/player_row_role"
+        android:layout_width="@dimen/role_image_width"
+        android:layout_height="@dimen/role_image_height"
+        tools:src="@android:drawable/ic_menu_camera"
+        android:layout_gravity="center"
+        />
+
 </LinearLayout>

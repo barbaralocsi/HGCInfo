@@ -54,7 +54,7 @@ public class TeamAdapter extends
 
         int teamId = teams.get(position).id;
         if(HGCTeams.getHGCTeams(regionId).contains(teamId)){
-            holder.HGCImageView.setImageResource(R.mipmap.ic_hgc);
+            holder.HGCImageView.setImageResource(R.drawable.ic_hgc);
         }
         else{
             holder.HGCImageView.setImageDrawable(null);

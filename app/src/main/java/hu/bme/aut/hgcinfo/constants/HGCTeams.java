@@ -2,10 +2,6 @@ package hu.bme.aut.hgcinfo.constants;
 
 import java.util.ArrayList;
 
-/**
- * Created by locsi on 22/10/2017.
- */
-
 public final class HGCTeams {
     public static final ArrayList<Integer> getHGCTeams(int regionId){
         switch (regionId) {
