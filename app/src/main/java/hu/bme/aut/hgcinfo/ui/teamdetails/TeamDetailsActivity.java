@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -51,7 +52,6 @@ public class TeamDetailsActivity extends AppCompatActivity{
         team = (Team) getIntent().getSerializableExtra(EXTRA_TEAM_ID);
 
 
-        //TODO fix this
         getSupportActionBar().setTitle(team.name);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -64,16 +64,6 @@ public class TeamDetailsActivity extends AppCompatActivity{
         //tvTeamIcon = (ImageView) findViewById(R.id.tvTeamIcon);
         //displayTeamData();
 
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void displayTeamData() {
@@ -138,6 +128,28 @@ public class TeamDetailsActivity extends AppCompatActivity{
         if(playerList == null || playerList.results==null || playerList.results.isEmpty()) {
             loadTeamData();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.refresh_teams) {
+            listOfRows.removeAllViews();
+            playerList=null;
+            loadTeamData();
+        }
+        else if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_teams, menu);
+        return true;
     }
 
 }

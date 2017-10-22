@@ -92,7 +92,10 @@ public class TeamAdapter extends
         //notifyItemRangeChanged(); ??
     }
 
-
+public void removeTeams(){
+    teams.clear();
+    notifyDataSetChanged();
+}
 
 
 public void removeCity(int position) {
