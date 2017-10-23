@@ -94,19 +94,19 @@ public class MainActivity extends AppCompatActivity {
         //ds.name = "DS";
         //adapter.addTeam(ds);
         recyclerView.setAdapter(adapter);
-        loadItemsInBackground();
+        loadItemsInBackgroundDB();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if(adapter.getItemCount()<=0) {
-            //loadTeams();
-            loadItemsInBackground();
+            //loadTeamsAPI();
+            loadItemsInBackgroundDB();
         }
     }
 
-    private void loadTeams() {
+    private void loadTeamsAPI() {
 
         Toast.makeText(MainActivity.this, "API call MainActivity",
                 Toast.LENGTH_SHORT).show();
@@ -139,13 +139,63 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.refresh_teams) {
-            adapter.removeTeams();
-            loadTeams();
+        switch (item.getItemId()) {
+            case R.id.refresh_teams:
+                adapter.removeTeams();
+                loadTeamsAPI();
+                return true;
+            case R.id.menu_region_eu:
+                regionId = 1;
+                item.setChecked(true);
+                adapter.removeTeamsFromAdaper();
+                loadItemsInBackgroundDB();
+                return true;
+            case R.id.menu_region_na:
+                regionId = 2;
+                item.setChecked(true);
+                adapter.removeTeamsFromAdaper();
+                loadItemsInBackgroundDB();
+                return true;
+            case R.id.menu_region_kr:
+                regionId = 3;
+                item.setChecked(true);
+                adapter.removeTeamsFromAdaper();
+                loadItemsInBackgroundDB();
+                return true;
+            case R.id.menu_region_ch:
+                regionId = 4;
+                item.setChecked(true);
+                adapter.removeTeamsFromAdaper();
+                loadItemsInBackgroundDB();
+                return true;
+            case R.id.menu_region_tw:
+                regionId = 5;
+                item.setChecked(true);
+                adapter.removeTeamsFromAdaper();
+                loadItemsInBackgroundDB();
+                return true;
+            case R.id.menu_region_anz:
+                regionId = 6;
+                item.setChecked(true);
+                adapter.removeTeamsFromAdaper();
+                loadItemsInBackgroundDB();
+                return true;
+            case R.id.menu_region_sea:
+                regionId = 7;
+                item.setChecked(true);
+                adapter.removeTeamsFromAdaper();
+                loadItemsInBackgroundDB();
+                return true;
+            case R.id.menu_region_la:
+                regionId = 8;
+                item.setChecked(true);
+                adapter.removeTeamsFromAdaper();
+                loadItemsInBackgroundDB();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -154,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void loadItemsInBackground() {
+    private void loadItemsInBackgroundDB() {
         new AsyncTask<Void, Void, List<SugarTeam>>() {
 
             @Override
@@ -163,9 +213,24 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            protected void onPostExecute(List<SugarTeam> team) {
-                super.onPostExecute(team);
-                adapter.update(team);
+            protected void onPostExecute(List<SugarTeam> teams) {
+                super.onPostExecute(teams);
+
+                // Give to the adapter the teams of this region
+                ArrayList<SugarTeam> regionTeams = new ArrayList<SugarTeam>();
+                for (SugarTeam t: teams) {
+                    if(t.region==regionId){
+                        regionTeams.add(t);
+                    }
+                }
+
+                // If the database is empty try to ask the API instead
+                if(regionTeams.isEmpty()){
+                    loadTeamsAPI();
+                    return;
+                }
+
+                adapter.update(regionTeams);
             }
         }.execute();
     }

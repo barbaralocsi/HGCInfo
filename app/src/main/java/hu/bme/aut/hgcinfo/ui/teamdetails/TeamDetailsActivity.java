@@ -1,6 +1,7 @@
 package hu.bme.aut.hgcinfo.ui.teamdetails;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,10 +16,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import hu.bme.aut.hgcinfo.R;
 import hu.bme.aut.hgcinfo.constants.RoleImageFinder;
+import hu.bme.aut.hgcinfo.db_model.SugarPlayer;
 import hu.bme.aut.hgcinfo.db_model.SugarTeam;
-import hu.bme.aut.hgcinfo.model.player.Player;
 import hu.bme.aut.hgcinfo.model.player.PlayerList;
 import hu.bme.aut.hgcinfo.network.NetworkManager;
 import retrofit2.Call;
@@ -40,8 +44,13 @@ public class TeamDetailsActivity extends AppCompatActivity{
     private LinearLayout listOfRows;
     private LayoutInflater inflater;
 
-    private PlayerList playerList = null;
+    //private PlayerList playerList = null;
 
+    private List<SugarPlayer> teamPlayers;
+
+    public TeamDetailsActivity(){
+        teamPlayers = new ArrayList<>();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +76,8 @@ public class TeamDetailsActivity extends AppCompatActivity{
     }
 
     private void displayTeamData() {
-
-        for (Player p: playerList.results) {
+        listOfRows.removeAllViews();
+        for (SugarPlayer p: teamPlayers) {
             View rowItem = inflater.inflate(R.layout.player_row, null);
 
             ImageView photo = (ImageView) rowItem.findViewById(R.id.player_row_photo);
@@ -77,7 +86,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
             ImageView role = (ImageView) rowItem.findViewById(R.id.player_row_role);
 
             Glide.with(this)
-                    .load(p.photo.medium)
+                    .load(p.mediumPhoto)
                     .crossFade()
                     .into(photo);
 
@@ -92,6 +101,12 @@ public class TeamDetailsActivity extends AppCompatActivity{
         }
     }
 
+    private void saveTeamsToDatabase(){
+        for (SugarPlayer p : teamPlayers) {
+            p.save();
+        }
+    }
+
     private void loadTeamData() {
 
         Toast.makeText(TeamDetailsActivity.this, "API call TeamDetailsActivity",
@@ -103,8 +118,10 @@ public class TeamDetailsActivity extends AppCompatActivity{
                                    Response<PlayerList> response) {
                 Log.d(TAG, "onResponse: " + response.code());
                 if (response.isSuccessful()) {
-                    playerList = response.body();
+                    PlayerList playerList = response.body();
+                    teamPlayers = SugarPlayer.makeSugar(playerList);
                     displayTeamData();
+                    saveTeamsToDatabase();
                 } else {
                     Toast.makeText(TeamDetailsActivity.this,
                             "Error: "+response.message(),
@@ -125,8 +142,8 @@ public class TeamDetailsActivity extends AppCompatActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        if(playerList == null || playerList.results==null || playerList.results.isEmpty()) {
-            loadTeamData();
+        if(teamPlayers == null ||  teamPlayers.isEmpty()) {
+            loadItemsInBackground();
         }
     }
 
@@ -134,8 +151,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.refresh_teams) {
-            listOfRows.removeAllViews();
-            playerList=null;
+            removePlayers();
             loadTeamData();
         }
         else if (id == android.R.id.home) {
@@ -146,10 +162,63 @@ public class TeamDetailsActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
+    public void removePlayers(){
+        removeAllFromDB();
+        teamPlayers.clear();
+        //displayTeamData(); //TODO lehet eleg lenne csak a betoltesnel frissiteni a kepet?
+    }
+
+    private void removeAllFromDB(){
+        for (SugarPlayer p : teamPlayers) {
+            p.delete();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_teams, menu);
         return true;
+    }
+
+    private void loadItemsInBackground() {
+        new AsyncTask<Void, Void, List<SugarPlayer>>() {
+
+            @Override
+            protected List<SugarPlayer> doInBackground(Void... voids) {
+                return SugarPlayer.listAll(SugarPlayer.class);
+            }
+
+            @Override
+            protected void onPostExecute(List<SugarPlayer> players) {
+                super.onPostExecute(players);
+                update(players);
+            }
+        }.execute();
+    }
+
+    /**
+     * Updates the whole list from database
+     * called by loadItemsInBackground
+     * @param players
+     */
+    public void update(List<SugarPlayer> players) {
+        teamPlayers.clear();
+        // Get only the players of the chosen team
+        for (SugarPlayer player: players) {
+            if (player.teamId == team.teamId){
+                teamPlayers.add(player);
+            }
+        }
+        // If the database is empty try to ask the API instead -- TODO shoudnt this be in the onPostExecute?
+        if(teamPlayers.isEmpty()){
+            loadTeamData();
+            return;
+        }
+
+        //addAll(playersOfTeam); // direkt nem addteams hogy ne mentse ujra
+        //addTeams(teams);
+        //notifyDataSetChanged();
+        displayTeamData();
     }
 
 }

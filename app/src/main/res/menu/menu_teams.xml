@@ -7,5 +7,48 @@
         android:orderInCategory="100"
         android:title="@string/refresh_teams"
         app:showAsAction="ifRoom"
-        android:icon = "@drawable/ic_refresh_black_24dp"/>
+        android:icon = "@drawable/ic_refresh_white_24dp"/>
+    <item
+        android:id="@+id/menu_style"
+        android:checkableBehavior="single"
+        android:icon="@drawable/earth"
+        android:title="@string/region"
+        app:showAsAction="ifRoom">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menu_region_eu"
+                    android:checked="true"
+                    android:title="@string/eu" />
+                <item
+                    android:id="@+id/menu_region_na"
+                    android:checked="false"
+                    android:title="@string/na" />
+                <item
+                    android:id="@+id/menu_region_kr"
+                    android:checked="false"
+                    android:title="@string/kr" />
+                <item
+                    android:id="@+id/menu_region_ch"
+                    android:checked="false"
+                    android:title="@string/ch" />
+                <item
+                    android:id="@+id/menu_region_tw"
+                    android:checked="false"
+                    android:title="@string/tw" />
+                <item
+                    android:id="@+id/menu_region_anz"
+                    android:checked="false"
+                    android:title="@string/anz" />
+                <item
+                    android:id="@+id/menu_region_sea"
+                    android:checked="false"
+                    android:title="@string/sea" />
+                <item
+                    android:id="@+id/menu_region_la"
+                    android:checked="false"
+                    android:title="@string/la" />
+            </group>
+        </menu>
+    </item>
 </menu>

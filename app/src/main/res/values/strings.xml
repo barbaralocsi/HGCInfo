@@ -4,4 +4,13 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="refresh_teams">Refresh teams</string>
+    <string name="region">Region</string>
+    <string name="eu">Europe</string>
+    <string name="na">North America</string>
+    <string name="kr">South Korea</string>
+    <string name="ch">China</string>
+    <string name="tw">Taiwan</string>
+    <string name="anz">Australia NZ</string>
+    <string name="sea">Southeast Asia</string>
+    <string name="la">Latin America</string>
 </resources>

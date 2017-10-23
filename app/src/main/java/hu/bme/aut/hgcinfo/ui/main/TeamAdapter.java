@@ -31,7 +31,6 @@ public class TeamAdapter extends
         this.listener = listener;
         teams = new ArrayList<>();
         this.mContext = mContext;
-        this.regionId=regionId;
     }
 
     @Override
@@ -72,9 +71,15 @@ public class TeamAdapter extends
         notifyItemInserted(teams.size() - 1);
     }
 
+    /**
+     * Adds newTeams to the teams in an order
+     * Order: Bring forward HGC teams
+     * calls notifyDataSetChanged <- TODO remove this?
+     * @param newTeams
+     */
     public void addTeams(List<SugarTeam> newTeams){
         // Bring HGC Teams to the front
-        ArrayList<Integer> HGCteamIds = HGCTeams.getHGCTeams(regionId);
+        ArrayList<Integer> HGCteamIds = HGCTeams.getHGCTeams();
         Iterator<SugarTeam> i = newTeams.iterator();
         ArrayList<SugarTeam> HGCTeams = new ArrayList<>();
         while (i.hasNext()) {
@@ -99,27 +104,22 @@ public class TeamAdapter extends
 
         teams.addAll(HGCTeams);
         notifyDataSetChanged();
-        //notifyItemRangeChanged(); ??
     }
 
-    public void removeTeams(){
-        purgeAll();
+    public void removeTeamsFromAdaper(){
         teams.clear();
         notifyDataSetChanged();
     }
 
-    private void purgeAll(){
-        for (SugarTeam t : teams) {
-            t.delete();
-        }
+    public void removeTeams(){
+        removeAllFromDB();
+        teams.clear();
+        notifyDataSetChanged();
     }
 
-
-public void removeCity(int position) {
-    teams.remove(position);
-        notifyItemRemoved(position);
-        if (position < teams.size()) {
-            notifyItemRangeChanged(position, teams.size() - position);
+    private void removeAllFromDB(){
+        for (SugarTeam t : teams) {
+            t.delete();
         }
     }
 
@@ -153,6 +153,8 @@ public void removeCity(int position) {
 
     public void update(List<SugarTeam> newTeams) {
         teams.clear();
+
+
         teams.addAll(newTeams); // direkt nem addteams hogy ne mentse ujra
         //addTeams(teams);
         notifyDataSetChanged();
