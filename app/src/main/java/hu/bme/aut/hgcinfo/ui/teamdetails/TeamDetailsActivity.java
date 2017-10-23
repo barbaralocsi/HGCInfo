@@ -150,7 +150,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.refresh_teams) {
+        if (id == R.id.refresh_team_players) {
             removePlayers();
             loadTeamData();
         }
@@ -176,7 +176,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_teams, menu);
+        getMenuInflater().inflate(R.menu.menu_team_info, menu);
         return true;
     }
 
