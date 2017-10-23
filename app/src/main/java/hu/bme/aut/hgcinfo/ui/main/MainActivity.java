@@ -137,6 +137,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void doRefreshMenuTasks(MenuItem item){
+        item.setChecked(true);
+        adapter.removeTeamsFromAdaper();
+        loadItemsInBackgroundDB();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -146,51 +152,35 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_region_eu:
                 regionId = 1;
-                item.setChecked(true);
-                adapter.removeTeamsFromAdaper();
-                loadItemsInBackgroundDB();
+                doRefreshMenuTasks(item);
                 return true;
             case R.id.menu_region_na:
                 regionId = 2;
-                item.setChecked(true);
-                adapter.removeTeamsFromAdaper();
-                loadItemsInBackgroundDB();
+                doRefreshMenuTasks(item);
                 return true;
             case R.id.menu_region_kr:
                 regionId = 3;
-                item.setChecked(true);
-                adapter.removeTeamsFromAdaper();
-                loadItemsInBackgroundDB();
+                doRefreshMenuTasks(item);
                 return true;
             case R.id.menu_region_ch:
                 regionId = 4;
-                item.setChecked(true);
-                adapter.removeTeamsFromAdaper();
-                loadItemsInBackgroundDB();
+                doRefreshMenuTasks(item);
                 return true;
             case R.id.menu_region_tw:
                 regionId = 5;
-                item.setChecked(true);
-                adapter.removeTeamsFromAdaper();
-                loadItemsInBackgroundDB();
+                doRefreshMenuTasks(item);
                 return true;
             case R.id.menu_region_anz:
                 regionId = 6;
-                item.setChecked(true);
-                adapter.removeTeamsFromAdaper();
-                loadItemsInBackgroundDB();
+                doRefreshMenuTasks(item);
                 return true;
             case R.id.menu_region_sea:
                 regionId = 7;
-                item.setChecked(true);
-                adapter.removeTeamsFromAdaper();
-                loadItemsInBackgroundDB();
+                doRefreshMenuTasks(item);
                 return true;
             case R.id.menu_region_la:
                 regionId = 8;
-                item.setChecked(true);
-                adapter.removeTeamsFromAdaper();
-                loadItemsInBackgroundDB();
+                doRefreshMenuTasks(item);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
