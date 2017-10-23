@@ -1,6 +1,7 @@
 package hu.bme.aut.hgcinfo.ui.main;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -13,8 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import hu.bme.aut.hgcinfo.R;
-import hu.bme.aut.hgcinfo.model.team.Team;
+import hu.bme.aut.hgcinfo.db_model.SugarTeam;
 import hu.bme.aut.hgcinfo.model.team.TeamList;
 import hu.bme.aut.hgcinfo.network.NetworkManager;
 import hu.bme.aut.hgcinfo.ui.teamdetails.TeamDetailsActivity;
@@ -62,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //mTextMessage = (TextView) findViewById(R.id.message);
+        //mTextMessage = (TextView) findViewById(R.teamId.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -76,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new TeamAdapter(
                 new OnTeamSelectedListener() {
                     @Override
-                    public void onTeamSelected(Team team) {
+                    public void onTeamSelected(SugarTeam team) {
                         Intent showDetailsIntent = new Intent();
                         showDetailsIntent.setClass(MainActivity.this,
                                 TeamDetailsActivity.class);
@@ -86,18 +90,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }, MainActivity.this,regionId);
         //Team ds = new Team();
-        //ds.id=142;
+        //ds.teamId=142;
         //ds.name = "DS";
         //adapter.addTeam(ds);
         recyclerView.setAdapter(adapter);
-
+        loadItemsInBackground();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if(adapter.getItemCount()<=0) {
-            loadTeams();
+            //loadTeams();
+            loadItemsInBackground();
         }
     }
 
@@ -113,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onResponse: " + response.code());
                 if (response.isSuccessful()) {
                     teamList = response.body();
-                    adapter.addTeams(teamList.results);
+                    ArrayList<SugarTeam> sugarTeams = SugarTeam.makeSugar(teamList.results);
+                    adapter.addTeams(sugarTeams);
                 } else {
                     Toast.makeText(MainActivity.this,
                             "Error: "+response.message(),
@@ -146,6 +152,22 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_teams, menu);
         return true;
+    }
+
+    private void loadItemsInBackground() {
+        new AsyncTask<Void, Void, List<SugarTeam>>() {
+
+            @Override
+            protected List<SugarTeam> doInBackground(Void... voids) {
+                return SugarTeam.listAll(SugarTeam.class);
+            }
+
+            @Override
+            protected void onPostExecute(List<SugarTeam> team) {
+                super.onPostExecute(team);
+                adapter.update(team);
+            }
+        }.execute();
     }
 
 }

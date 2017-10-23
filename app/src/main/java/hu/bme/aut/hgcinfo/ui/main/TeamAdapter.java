@@ -16,12 +16,13 @@ import java.util.List;
 
 import hu.bme.aut.hgcinfo.R;
 import hu.bme.aut.hgcinfo.constants.HGCTeams;
-import hu.bme.aut.hgcinfo.model.team.Team;
+import hu.bme.aut.hgcinfo.db_model.SugarTeam;
+
 
 public class TeamAdapter extends
   RecyclerView.Adapter<TeamAdapter.TeamViewHolder> {
 
-    private final List<Team> teams;
+    private final List<SugarTeam> teams;
     private OnTeamSelectedListener listener;
     private Context mContext;
     private int regionId;
@@ -48,12 +49,12 @@ public class TeamAdapter extends
         holder.nameTextView.setText(teams.get(position).name);
 
         Glide.with(mContext)
-                .load(teams.get(position).logo.small)
+                .load(teams.get(position).logoSmall)
                 .crossFade()
                 .into(holder.teamIcon);
 
-        int teamId = teams.get(position).id;
-        if(HGCTeams.getHGCTeams(regionId).contains(teamId)){
+        int teamId = teams.get(position).teamId;
+        if(teams.get(position).isHgc){
             holder.HGCImageView.setImageResource(R.drawable.ic_hgc);
         }
         else{
@@ -66,36 +67,52 @@ public class TeamAdapter extends
         return teams.size();
     }
 
-    public void addTeam(Team newTeam) {
+    public void addTeam(SugarTeam newTeam) {
         teams.add(newTeam);
         notifyItemInserted(teams.size() - 1);
     }
 
-    public void addTeams(List<Team> newTeams){
+    public void addTeams(List<SugarTeam> newTeams){
         // Bring HGC Teams to the front
         ArrayList<Integer> HGCteamIds = HGCTeams.getHGCTeams(regionId);
-        Iterator<Team> i = newTeams.iterator();
-        ArrayList<Team> HGCTeams = new ArrayList<>();
+        Iterator<SugarTeam> i = newTeams.iterator();
+        ArrayList<SugarTeam> HGCTeams = new ArrayList<>();
         while (i.hasNext()) {
-            Team t = i.next(); // must be called before you can call i.remove()
+            SugarTeam t = i.next(); // must be called before you can call i.remove()
             // Do something
-            if(HGCteamIds.contains(t.id)){
+            if(HGCteamIds.contains(t.teamId)){
+                t.isHgc=true;
                 HGCTeams.add(t);
                 i.remove();
             }
         }
         // HGC teams are in the begining, add the other to it
         HGCTeams.addAll(newTeams);
+        List<SugarTeam> allTeams = HGCTeams;
+
+        long min;
+        for (SugarTeam t: allTeams) {
+            long a = t.save();
+            long b = a+2;
+            min = b+4;
+        }
 
         teams.addAll(HGCTeams);
         notifyDataSetChanged();
         //notifyItemRangeChanged(); ??
     }
 
-public void removeTeams(){
-    teams.clear();
-    notifyDataSetChanged();
-}
+    public void removeTeams(){
+        purgeAll();
+        teams.clear();
+        notifyDataSetChanged();
+    }
+
+    private void purgeAll(){
+        for (SugarTeam t : teams) {
+            t.delete();
+        }
+    }
 
 
 public void removeCity(int position) {
@@ -134,9 +151,10 @@ public void removeCity(int position) {
         }
     }
 
-    public void update(List<Team> shoppingItems) {
+    public void update(List<SugarTeam> newTeams) {
         teams.clear();
-        teams.addAll(shoppingItems);
+        teams.addAll(newTeams); // direkt nem addteams hogy ne mentse ujra
+        //addTeams(teams);
         notifyDataSetChanged();
     }
 

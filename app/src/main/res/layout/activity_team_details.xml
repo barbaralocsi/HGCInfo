@@ -16,14 +16,14 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/tvTeamName"
+            android:teamId="@+teamId/tvTeamName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="TeamName"/>
 
 
         <ImageView
-            android:id="@+id/tvTeamIcon"
+            android:teamId="@+teamId/tvTeamIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"/>

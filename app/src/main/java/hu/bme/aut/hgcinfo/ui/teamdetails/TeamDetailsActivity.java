@@ -17,9 +17,9 @@ import com.bumptech.glide.Glide;
 
 import hu.bme.aut.hgcinfo.R;
 import hu.bme.aut.hgcinfo.constants.RoleImageFinder;
+import hu.bme.aut.hgcinfo.db_model.SugarTeam;
 import hu.bme.aut.hgcinfo.model.player.Player;
 import hu.bme.aut.hgcinfo.model.player.PlayerList;
-import hu.bme.aut.hgcinfo.model.team.Team;
 import hu.bme.aut.hgcinfo.network.NetworkManager;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,7 +32,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
 
     //private Team teamData = null;
 
-    private Team team;
+    private SugarTeam team;
 
     //private TextView tvTeamName;
     //private ImageView tvTeamIcon;
@@ -49,7 +49,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
         setContentView(R.layout.activity_team_details);
 
         //team = getIntent().getIntExtra(EXTRA_TEAM_ID, 0);
-        team = (Team) getIntent().getSerializableExtra(EXTRA_TEAM_ID);
+        team = (SugarTeam) getIntent().getSerializableExtra(EXTRA_TEAM_ID);
 
 
         getSupportActionBar().setTitle(team.name);
@@ -59,9 +59,9 @@ public class TeamDetailsActivity extends AppCompatActivity{
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
-        //tvTeamName = (TextView) findViewById(R.id.tvTeamName);
+        //tvTeamName = (TextView) findViewById(R.teamId.tvTeamName);
 
-        //tvTeamIcon = (ImageView) findViewById(R.id.tvTeamIcon);
+        //tvTeamIcon = (ImageView) findViewById(R.teamId.tvTeamIcon);
         //displayTeamData();
 
     }
@@ -97,7 +97,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
         Toast.makeText(TeamDetailsActivity.this, "API call TeamDetailsActivity",
                 Toast.LENGTH_SHORT).show();
 
-        NetworkManager.getInstance().getPlayersOfTeam(team.id).enqueue(new Callback<PlayerList>() {
+        NetworkManager.getInstance().getPlayersOfTeam(team.teamId).enqueue(new Callback<PlayerList>() {
             @Override
             public void onResponse(Call<PlayerList> call,
                                    Response<PlayerList> response) {
