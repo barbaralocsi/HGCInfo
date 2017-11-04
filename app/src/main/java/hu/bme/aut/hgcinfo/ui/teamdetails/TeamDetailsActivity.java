@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
 
     private LinearLayout listOfRows;
     private LayoutInflater inflater;
+    private AVLoadingIndicatorView avi;
 
     //private PlayerList playerList = null;
 
@@ -63,9 +65,11 @@ public class TeamDetailsActivity extends AppCompatActivity{
         //team = getIntent().getIntExtra(EXTRA_TEAM_ID, 0);
         team = (SugarTeam) getIntent().getSerializableExtra(EXTRA_TEAM_ID);
 
-
         getSupportActionBar().setTitle(team.name);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        avi= (AVLoadingIndicatorView) findViewById(R.id.avi);
+        stopAnim();
 
         listOfRows = (LinearLayout) findViewById(R.id.list_of_rows);
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -115,6 +119,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
         Toast.makeText(TeamDetailsActivity.this, "API call TeamDetailsActivity",
                 Toast.LENGTH_SHORT).show();
         Log.e(TAG, "loadTeamData");
+        startAnim();
         final Call<PlayerList> thisCall =  NetworkManager.getInstance().getPlayersOfTeam(team.teamId);
         calls.add(thisCall);
         thisCall.enqueue(new Callback<PlayerList>() {
@@ -124,6 +129,8 @@ public class TeamDetailsActivity extends AppCompatActivity{
                 Log.e(TAG, "onResponse: " + response.code());
                 // TODO: beter solution?
                 removePlayers(); // Delete the players again
+
+                stopAnim();
 
                 if (response.isSuccessful()) {
                     PlayerList playerList = response.body();
@@ -141,6 +148,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
             @Override
             public void onFailure(Call<PlayerList> call, Throwable t) {
                 Log.e(TAG, "onFailure ");
+                stopAnim();
                 t.printStackTrace();
                 Toast.makeText(TeamDetailsActivity.this,
                         "Error in network request, check LOG",
@@ -186,6 +194,16 @@ public class TeamDetailsActivity extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    void startAnim(){
+        avi.show();
+        // or avi.smoothToShow();
+    }
+
+    void stopAnim(){
+        avi.hide();
+        // or avi.smoothToHide();
     }
 
     public void removePlayers(){
