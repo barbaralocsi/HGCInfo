@@ -31,6 +31,9 @@ import retrofit2.Response;
 
 public class TeamDetailsActivity extends AppCompatActivity{
 
+    // store the ongoing call so we can cancel it onDestroy
+    private List< Call<PlayerList> > calls = new ArrayList<>();
+
     private static final String TAG = "TeamDetailsActivity";
     public static final String EXTRA_TEAM_ID = "extra.team_id";
 
@@ -111,12 +114,17 @@ public class TeamDetailsActivity extends AppCompatActivity{
 
         Toast.makeText(TeamDetailsActivity.this, "API call TeamDetailsActivity",
                 Toast.LENGTH_SHORT).show();
-
-        NetworkManager.getInstance().getPlayersOfTeam(team.teamId).enqueue(new Callback<PlayerList>() {
+        Log.e(TAG, "loadTeamData");
+        final Call<PlayerList> thisCall =  NetworkManager.getInstance().getPlayersOfTeam(team.teamId);
+        calls.add(thisCall);
+        thisCall.enqueue(new Callback<PlayerList>() {
             @Override
             public void onResponse(Call<PlayerList> call,
                                    Response<PlayerList> response) {
-                Log.d(TAG, "onResponse: " + response.code());
+                Log.e(TAG, "onResponse: " + response.code());
+                // TODO: beter solution?
+                removePlayers(); // Delete the players again
+
                 if (response.isSuccessful()) {
                     PlayerList playerList = response.body();
                     teamPlayers = SugarPlayer.makeSugar(playerList);
@@ -127,14 +135,17 @@ public class TeamDetailsActivity extends AppCompatActivity{
                             "Error: "+response.message(),
                             Toast.LENGTH_SHORT).show();
                 }
+                calls.remove(thisCall);
             }
 
             @Override
             public void onFailure(Call<PlayerList> call, Throwable t) {
+                Log.e(TAG, "onFailure ");
                 t.printStackTrace();
                 Toast.makeText(TeamDetailsActivity.this,
                         "Error in network request, check LOG",
                         Toast.LENGTH_SHORT).show();
+                calls.remove(thisCall);
             }
         });
     }
@@ -144,6 +155,21 @@ public class TeamDetailsActivity extends AppCompatActivity{
         super.onResume();
         if(teamPlayers == null ||  teamPlayers.isEmpty()) {
             loadItemsInBackground();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e(TAG,"onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e(TAG,"onDestroy");
+        for (Call call: calls) {
+            call.cancel();
         }
     }
 
