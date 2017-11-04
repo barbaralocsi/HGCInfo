@@ -26,11 +26,23 @@ public final class HGCTeams {
             add(203);
     }};
 
+    public static final ArrayList<Integer> HGCKR = new ArrayList<Integer>() {{
+            add(139);
+            add(167);
+            add(41);
+            add(42);
+            add(78);
+            add(41);
+            add(209);
+            add(210);
+    }};
+
     public static final ArrayList<Integer> getHGCTeams(){
 
         ArrayList<Integer> allHGC = new ArrayList<>();
         allHGC.addAll(HGCEU);
         allHGC.addAll(HGCNA);
+        allHGC.addAll(HGCKR);
 
         return allHGC;
         /*
@@ -52,11 +64,11 @@ public final class HGCTeams {
                 add(123);
                 add(205);
                 add(203);
-            }};
+            }}; 
             */
     }
 
     public static final boolean isHGCTeam(SugarTeam t){
-        return HGCEU.contains(t) || HGCNA.contains(t);
+        return HGCEU.contains(t)  || HGCNA.contains(t) || HGCKR.contains(t);
     }
 }
