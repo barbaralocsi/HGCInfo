@@ -12,18 +12,26 @@ import hu.bme.aut.hgcinfo.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private void changeFragment(int position) {
+    int FRAGMENT_TEAMS = 0;
+    int FRAGMENT_FAVS = 1;
+    int FRAGMENT_SETTINGS = 2;
+
+
+    private void changeFragment(int fragmentId) {
 
         Fragment newFragment = null;
-
-        if (position == 0) {
+        Bundle bundle = new Bundle();
+        if (fragmentId == FRAGMENT_TEAMS) {
             newFragment = new FragmentTeams();
-        } else if (position == 1) {
-            newFragment = new FragmentFavs();
+            bundle.putBoolean("full", true);
+        } else if (fragmentId == FRAGMENT_FAVS) {
+            newFragment = new FragmentTeams();
+            bundle.putBoolean("full", false);
         } else {
             newFragment = new FragmentSettings();
         }
 
+        newFragment.setArguments(bundle);
         getFragmentManager().beginTransaction().replace(
                 R.id.fragmentContainer, newFragment)
                 .commit();
@@ -36,13 +44,13 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_teams:
-                    changeFragment(0);
+                    changeFragment(FRAGMENT_TEAMS);
                     return true;
                 case R.id.navigation_favs:
-                    changeFragment(1);
+                    changeFragment(FRAGMENT_FAVS);
                     return true;
                 case R.id.navigation_settings:
-                    changeFragment(2);
+                    changeFragment(FRAGMENT_SETTINGS);
                     return true;
             }
             return false;

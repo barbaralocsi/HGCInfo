@@ -36,9 +36,11 @@ public class FragmentTeams extends android.app.Fragment {
     private TeamAdapter adapter;
     private static final String TAG = "FragmentTeams";
     private TeamList teamList = null;
+    private Boolean FULL;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        FULL = getArguments().getBoolean("full");
         setHasOptionsMenu(true);
         View rootview = inflater.inflate(R.layout.fragment_teams_content,container,false);
         initRecyclerView(rootview);
@@ -53,11 +55,14 @@ public class FragmentTeams extends android.app.Fragment {
                 new OnTeamSelectedListener() {
                     @Override
                     public void onTeamSelected(SugarTeam team) {
+                        Log.e(TAG, "out:" +String.valueOf(team.getId()));
                         Intent showDetailsIntent = new Intent();
                         showDetailsIntent.setClass(getActivity(),
                                 TeamDetailsActivity.class);
                         showDetailsIntent.putExtra(
-                                TeamDetailsActivity.EXTRA_TEAM_ID, team);
+                                TeamDetailsActivity.EXTRA_TEAM, team);
+                        showDetailsIntent.putExtra(
+                                TeamDetailsActivity.EXTRA_TEAM_ID, team.getId());
                         startActivity(showDetailsIntent);
                     }
                 }, getActivity(),regionId);
@@ -82,27 +87,43 @@ public class FragmentTeams extends android.app.Fragment {
             protected void onPostExecute(List<SugarTeam> teams) {
                 super.onPostExecute(teams);
 
-                // Give to the adapter the teams of this region
-                ArrayList<SugarTeam> regionTeams = new ArrayList<SugarTeam>();
-                for (SugarTeam t: teams) {
-                    if(t.region==regionId){
-                        regionTeams.add(t);
+                ArrayList<SugarTeam> selectedTeams = new ArrayList<SugarTeam>();
+
+                if(FULL) {
+                    // Give to the adapter the teams of this region
+
+                    for (SugarTeam t : teams) {
+                        if (t.region == regionId) {
+                            selectedTeams.add(t);
+                            Log.d(TAG, t.name + " " + t.isFavourite);
+                        }
+                    }
+
+                    // If the database is empty try to ask the API instead
+                    if (selectedTeams.isEmpty()) {
+                        loadTeamsAPI();
+                        return;
+                    }
+                }
+                else{
+                    // TODO
+                    for (SugarTeam t : teams) {
+                        if (t.isFavourite == true) {
+                            selectedTeams.add(t);
+                            Log.d(TAG, t.name + " " + t.isFavourite);
+                        }
                     }
                 }
 
-                // If the database is empty try to ask the API instead
-                if(regionTeams.isEmpty()){
-                    loadTeamsAPI();
-                    return;
-                }
-
-                adapter.update(regionTeams);
+                adapter.update(selectedTeams);
             }
         }.execute();
     }
 
     private void loadTeamsAPI() {
-
+        if(!FULL){
+            return;
+        }
         Toast.makeText(getActivity(), "API call MainActivity",
                 Toast.LENGTH_SHORT).show();
 
@@ -135,10 +156,7 @@ public class FragmentTeams extends android.app.Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(adapter.getItemCount()<=0) {
-            //loadTeamsAPI();
-            loadItemsInBackgroundDB();
-        }
+        loadItemsInBackgroundDB();
     }
 
     private void doRefreshMenuTasks(MenuItem item){

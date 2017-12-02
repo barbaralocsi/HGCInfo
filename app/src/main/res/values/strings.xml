@@ -13,4 +13,5 @@
     <string name="anz">Australia NZ</string>
     <string name="sea">Southeast Asia</string>
     <string name="la">Latin America</string>
+    <string name="action_favorites">Favourite</string>
 </resources>

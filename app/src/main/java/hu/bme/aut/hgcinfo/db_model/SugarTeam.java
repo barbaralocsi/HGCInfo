@@ -19,6 +19,7 @@ public class SugarTeam extends SugarRecord implements Serializable
     public String logoBig;
     public String logoMedium;
     public boolean isHgc;
+    public boolean isFavourite;
 
     public SugarTeam(int id, String name, int region, String url, Logo logo) {
         this.teamId = id;
@@ -29,10 +30,12 @@ public class SugarTeam extends SugarRecord implements Serializable
         this.logoBig = logo.big;
         this.logoMedium = logo.medium;
         isHgc=false;
+        isFavourite=false;
     }
 
     public SugarTeam() {
         isHgc=false;
+        isFavourite=false;
     }
 
     public SugarTeam(Team team){
@@ -44,6 +47,7 @@ public class SugarTeam extends SugarRecord implements Serializable
         this.logoBig = team.logo.big;
         this.logoMedium = team.logo.medium;
         isHgc=false;
+        isFavourite=false;
     }
 
     public static ArrayList<SugarTeam> makeSugar(List<Team> teams){
@@ -54,4 +58,11 @@ public class SugarTeam extends SugarRecord implements Serializable
         return st;
     }
 
+    public void setFavouirte(boolean fav) {
+        this.isFavourite = fav;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

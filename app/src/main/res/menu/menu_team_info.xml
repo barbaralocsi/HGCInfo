@@ -8,4 +8,10 @@
         android:title="@string/refresh_teams"
         app:showAsAction="ifRoom"
         android:icon = "@drawable/ic_refresh_white_24dp"/>
+    <item
+        android:id="@+id/action_favorites"
+        android:checkable="true"
+        android:title="@string/action_favorites"
+        app:actionLayout="@layout/action_layout_styled_checkbox"
+        app:showAsAction="ifRoom|withText" />
 </menu>

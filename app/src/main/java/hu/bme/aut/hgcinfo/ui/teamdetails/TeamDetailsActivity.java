@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -37,6 +39,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
 
     private static final String TAG = "TeamDetailsActivity";
     public static final String EXTRA_TEAM_ID = "extra.team_id";
+    public static final String EXTRA_TEAM = "extra.team";
 
     //private Team teamData = null;
 
@@ -64,7 +67,10 @@ public class TeamDetailsActivity extends AppCompatActivity{
         setContentView(R.layout.activity_team_details);
 
         //team = getIntent().getIntExtra(EXTRA_TEAM_ID, 0);
-        team = (SugarTeam) getIntent().getSerializableExtra(EXTRA_TEAM_ID);
+        team = (SugarTeam) getIntent().getSerializableExtra(EXTRA_TEAM);
+
+        team.setId((long) getIntent().getSerializableExtra(EXTRA_TEAM_ID));
+        Log.e(TAG, String.valueOf("inID:" +team.getId()));
 
         getSupportActionBar().setTitle(team.name);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -81,6 +87,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
 
         //tvTeamIcon = (ImageView) findViewById(R.teamId.tvTeamIcon);
         //displayTeamData();
+
 
     }
 
@@ -189,12 +196,17 @@ public class TeamDetailsActivity extends AppCompatActivity{
         if (id == R.id.refresh_team_players) {
             removePlayers();
             loadTeamData();
+            Log.e(TAG, "refresh");
+        }
+        else if(id == R.id.action_favorites){
+            // TODO ez nem kell onCreateOptionsMenu-ben van kezelve
         }
         else if (id == android.R.id.home) {
+            Log.e(TAG, "back");
             finish();
             return true;
         }
-
+        Log.e(TAG, "gombnyomva");
         return super.onOptionsItemSelected(item);
     }
 
@@ -225,6 +237,37 @@ public class TeamDetailsActivity extends AppCompatActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_team_info, menu);
+
+        final CheckBox checkBox = (CheckBox) menu.findItem(R.id.action_favorites).getActionView();
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.e(TAG, "action_favorites");
+                if(!checkBox.isChecked()){
+                    // Remove from favourites
+                    team.setFavouirte(false);
+                    Log.e(TAG, "removefav");
+                }
+                else{
+                    // Add to favourites
+                    team.setFavouirte(true);
+                    Log.e(TAG, "addfav");
+                }
+                Log.e(TAG, "Inside: " +String.valueOf(team.isFavourite));
+                team.save();
+                Log.e(TAG, "Inside2: " +String.valueOf(team.isFavourite));
+                Log.e(TAG, "Inside2: " +String.valueOf(team.name));
+
+            }
+        });
+        Log.e(TAG, String.valueOf(team.isFavourite));
+
+        if(team.isFavourite){
+            Log.e(TAG, "bent az ifben");
+            menu.findItem(R.id.action_favorites).setChecked(true);
+            checkBox.setChecked(true);
+            Log.e(TAG, "isChecked: " +menu.findItem(R.id.action_favorites).isChecked());
+        }
         return true;
     }
 
