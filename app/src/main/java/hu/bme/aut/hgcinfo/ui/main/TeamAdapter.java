@@ -84,22 +84,21 @@ public class TeamAdapter extends
         ArrayList<SugarTeam> HGCTeams = new ArrayList<>();
         while (i.hasNext()) {
             SugarTeam t = i.next(); // must be called before you can call i.remove()
-            // Do something
             if(HGCteamIds.contains(t.teamId)){
                 t.isHgc=true;
                 HGCTeams.add(t);
                 i.remove();
+            }
+            if(tempFavs.contains(t.teamId)){
+                t.isFavourite = true;
             }
         }
         // HGC teams are in the begining, add the other to it
         HGCTeams.addAll(newTeams);
         List<SugarTeam> allTeams = HGCTeams;
 
-        long min;
         for (SugarTeam t: allTeams) {
-            long a = t.save();
-            long b = a+2;
-            min = b+4;
+            t.save();
         }
 
         teams.addAll(HGCTeams);
@@ -111,7 +110,14 @@ public class TeamAdapter extends
         notifyDataSetChanged();
     }
 
+    private ArrayList<Integer> tempFavs = new ArrayList<>();
+
     public void removeTeams(){
+        for (SugarTeam t: teams) {
+            if(t.isFavourite){
+                tempFavs.add(t.teamId);
+            }
+        }
         removeAllFromDB();
         teams.clear();
         notifyDataSetChanged();
