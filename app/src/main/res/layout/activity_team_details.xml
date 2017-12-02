@@ -44,15 +44,27 @@
 
         </LinearLayout>
     </ScrollView>
+    <!---
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/avi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:indicatorName="BallPulseIndicator"
+            app:indicatorColor="@color/colorPrimaryDark"
+            android:foregroundGravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            />
+        -->
+        <RelativeLayout
+            android:id="@+id/loadingPanel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center" >
 
-    <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/avi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:indicatorName="BallPulseIndicator"
-        app:indicatorColor="@color/colorPrimaryDark"
-        android:foregroundGravity="center"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        />
-</RelativeLayout>
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+        </RelativeLayout>
+    </RelativeLayout>

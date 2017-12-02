@@ -11,11 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,8 @@ public class TeamDetailsActivity extends AppCompatActivity{
 
     private LinearLayout listOfRows;
     private LayoutInflater inflater;
-    private AVLoadingIndicatorView avi;
+    //private AVLoadingIndicatorView avi;
+    private RelativeLayout loadingPanel;
 
     //private PlayerList playerList = null;
 
@@ -68,7 +69,8 @@ public class TeamDetailsActivity extends AppCompatActivity{
         getSupportActionBar().setTitle(team.name);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        avi= (AVLoadingIndicatorView) findViewById(R.id.avi);
+        //avi= (AVLoadingIndicatorView) findViewById(R.id.avi);
+        loadingPanel = (RelativeLayout) findViewById(R.id.loadingPanel);
         stopAnim();
 
         listOfRows = (LinearLayout) findViewById(R.id.list_of_rows);
@@ -197,13 +199,15 @@ public class TeamDetailsActivity extends AppCompatActivity{
     }
 
     void startAnim(){
-        avi.show();
+        //avi.show();
         // or avi.smoothToShow();
+        loadingPanel.setVisibility(RelativeLayout.VISIBLE);
     }
 
     void stopAnim(){
-        avi.hide();
+        //avi.hide();
         // or avi.smoothToHide();
+        loadingPanel.setVisibility(RelativeLayout.GONE);
     }
 
     public void removePlayers(){
