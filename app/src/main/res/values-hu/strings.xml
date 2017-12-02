@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">HGCInfo</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="refresh_teams">Csapatok frissítése</string>
+    <string name="region">Régió</string>
+    <string name="eu">Európa</string>
+    <string name="na">Észak-Amerika</string>
+    <string name="kr">Dél-Kórea</string>
+    <string name="ch">Kína</string>
+    <string name="tw">Tajvan</string>
+    <string name="anz">Ausztrália ÚZ</string>
+    <string name="sea">Délkelet-Ázsia</string>
+    <string name="la">Latin-Amerika</string>
+</resources>
