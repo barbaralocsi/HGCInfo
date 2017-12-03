@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -125,8 +124,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
 
     private void loadTeamData() {
 
-        Toast.makeText(TeamDetailsActivity.this, "API call TeamDetailsActivity",
-                Toast.LENGTH_SHORT).show();
+        //Toast.makeText(TeamDetailsActivity.this, "API call TeamDetailsActivity", Toast.LENGTH_SHORT).show();
         Log.e(TAG, "loadTeamData");
         startAnim();
         final Call<PlayerList> thisCall =  NetworkManager.getInstance().getPlayersOfTeam(team.teamId);
@@ -146,9 +144,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
                     displayTeamData();
                     saveTeamsToDatabase();
                 } else {
-                    Toast.makeText(TeamDetailsActivity.this,
-                            "Error: "+response.message(),
-                            Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(TeamDetailsActivity.this,"Error: "+response.message(), Toast.LENGTH_SHORT).show();
                 }
                 calls.remove(thisCall);
             }
@@ -158,9 +154,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
                 Log.e(TAG, "onFailure ");
                 stopAnim();
                 t.printStackTrace();
-                Toast.makeText(TeamDetailsActivity.this,
-                        "Error in network request, check LOG",
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(TeamDetailsActivity.this,"Error in network request, check LOG", Toast.LENGTH_SHORT).show();
                 calls.remove(thisCall);
             }
         });

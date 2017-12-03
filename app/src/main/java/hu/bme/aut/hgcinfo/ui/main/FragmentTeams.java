@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,8 +132,7 @@ public class FragmentTeams extends android.app.Fragment {
         if(!FULL){
             return;
         }
-        Toast.makeText(getActivity(), "API call MainActivity",
-                Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "API call MainActivity", Toast.LENGTH_SHORT).show();
 
         NetworkManager.getInstance().getAllTeams(regionId).enqueue(new Callback<TeamList>() {
             @Override
@@ -146,18 +144,14 @@ public class FragmentTeams extends android.app.Fragment {
                     ArrayList<SugarTeam> sugarTeams = SugarTeam.makeSugar(teamList.results);
                     adapter.addTeams(sugarTeams);
                 } else {
-                    Toast.makeText(getActivity(),
-                            "Error: "+response.message(),
-                            Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(),"Error: "+response.message(),Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<TeamList> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(getActivity(),
-                        "Error in network request, check LOG",
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),"Error in network request, check LOG",Toast.LENGTH_SHORT).show();
             }
         });
     }
