@@ -8,9 +8,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-/**
- * Created by locsi on 21/10/2017.
- */
 
 public interface TeamApi {
     @GET("/teams/{teamid}/?format=json")

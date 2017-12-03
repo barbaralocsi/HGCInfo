@@ -4,10 +4,6 @@ import android.support.annotation.DrawableRes;
 
 import hu.bme.aut.hgcinfo.R;
 
-/**
- * Created by locsi on 22/10/2017.
- */
-
 public final class RoleImageFinder {
 
     public static final @DrawableRes int findRoleImage (int role){

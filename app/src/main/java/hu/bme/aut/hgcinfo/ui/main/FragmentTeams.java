@@ -30,10 +30,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by locsi on 12/2/2017.
- */
-
 public class FragmentTeams extends android.app.Fragment {
     private RecyclerView recyclerView;
     private int regionId=1;
