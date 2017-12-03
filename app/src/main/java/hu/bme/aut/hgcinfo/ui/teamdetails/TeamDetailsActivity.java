@@ -141,8 +141,16 @@ public class TeamDetailsActivity extends AppCompatActivity{
                 if (response.isSuccessful()) {
                     PlayerList playerList = response.body();
                     teamPlayers = SugarPlayer.makeSugar(playerList);
+                    if(teamPlayers.isEmpty()){
+                        //empty team
+                        TextView empty = new TextView(TeamDetailsActivity.this);
+                        empty.setText(R.string.team_with_no_member);
+                        listOfRows.addView(empty);
+                    }
+                    else{
                     displayTeamData();
                     saveTeamsToDatabase();
+                    }
                 } else {
                     //Toast.makeText(TeamDetailsActivity.this,"Error: "+response.message(), Toast.LENGTH_SHORT).show();
                 }
