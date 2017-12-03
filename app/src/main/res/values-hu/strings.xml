@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">HGCInfo</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_teams">Csapatok</string>
+    <string name="title_favs">Kedvencek</string>
+    <string name="title_settings">Beállítások</string>
     <string name="refresh_teams">Csapatok frissítése</string>
     <string name="region">Régió</string>
     <string name="eu">Európa</string>
