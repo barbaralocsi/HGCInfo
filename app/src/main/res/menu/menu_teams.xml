@@ -9,7 +9,6 @@
         app:showAsAction="ifRoom"
         android:icon = "@drawable/ic_refresh_white_24dp"/>
     <item
-        android:id="@+id/menu_style"
         android:checkableBehavior="single"
         android:icon="@drawable/earth"
         android:title="@string/region"

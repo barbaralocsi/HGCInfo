@@ -94,7 +94,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
     private void displayTeamData() {
         listOfRows.removeAllViews();
         for (SugarPlayer p: teamPlayers) {
-            View rowItem = inflater.inflate(R.layout.player_row, null);
+            View rowItem = inflater.inflate(R.layout.player_row, loadingPanel, false);
 
             ImageView photo = (ImageView) rowItem.findViewById(R.id.player_row_photo);
             TextView nickName = (TextView) rowItem.findViewById(R.id.player_row_nick);
@@ -240,12 +240,12 @@ public class TeamDetailsActivity extends AppCompatActivity{
                 Log.e(TAG, "action_favorites");
                 if(!checkBox.isChecked()){
                     // Remove from favourites
-                    team.setFavouirte(false);
+                    team.setFavourite(false);
                     Log.e(TAG, "removefav");
                 }
                 else{
                     // Add to favourites
-                    team.setFavouirte(true);
+                    team.setFavourite(true);
                     Log.e(TAG, "addfav");
                 }
                 Log.e(TAG, "Inside: " +String.valueOf(team.isFavourite));

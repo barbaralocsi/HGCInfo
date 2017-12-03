@@ -21,11 +21,10 @@ public class NetworkManager {
         return instance;
     }
 
-    private Retrofit retrofit;
     private TeamApi teamApi;
 
     private NetworkManager() {
-        retrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ENDPOINT_ADDRESS)
                 .client(new OkHttpClient.Builder().build())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -39,8 +38,7 @@ public class NetworkManager {
     }
 
     public Call<PlayerList> getPlayersOfTeam(Integer teamId) {
-        Call<PlayerList> tl =teamApi.getPlayersOfTeam(teamId);
-        return tl;
+        return teamApi.getPlayersOfTeam(teamId);
     }
 
 

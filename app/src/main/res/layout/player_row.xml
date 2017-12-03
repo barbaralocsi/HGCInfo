@@ -11,11 +11,10 @@
         android:layout_width="@dimen/small_player_image_width"
         android:layout_height="@dimen/small_player_image_height"
         tools:src="@android:drawable/ic_menu_camera"
-        android:layout_gravity="center"
-        />
+        android:layout_gravity="center" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="16dp"
@@ -43,7 +42,6 @@
         android:layout_width="@dimen/role_image_width"
         android:layout_height="@dimen/role_image_height"
         tools:src="@android:drawable/ic_menu_camera"
-        android:layout_gravity="center"
-        />
+        android:layout_gravity="center" />
 
 </LinearLayout>

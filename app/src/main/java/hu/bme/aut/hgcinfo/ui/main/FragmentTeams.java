@@ -14,8 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -31,7 +29,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FragmentTeams extends android.app.Fragment {
-    private RecyclerView recyclerView;
     private int regionId=1;
     private TeamAdapter adapter;
     private static final String TAG = "FragmentTeams";
@@ -56,7 +53,7 @@ public class FragmentTeams extends android.app.Fragment {
 
 
     private void initRecyclerView(View rootview) {
-        recyclerView = rootview.findViewById(R.id.MainRecyclerView);
+        RecyclerView recyclerView = rootview.findViewById(R.id.MainRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new TeamAdapter(
                 new OnTeamSelectedListener() {
@@ -100,7 +97,7 @@ public class FragmentTeams extends android.app.Fragment {
             protected void onPostExecute(List<SugarTeam> teams) {
                 super.onPostExecute(teams);
 
-                ArrayList<SugarTeam> selectedTeams = new ArrayList<SugarTeam>();
+                ArrayList<SugarTeam> selectedTeams = new ArrayList<>();
 
                 if(FULL) {
                     // Give to the adapter the teams of this region
@@ -120,7 +117,7 @@ public class FragmentTeams extends android.app.Fragment {
                 }
                 else{
                     for (SugarTeam t : teams) {
-                        if (t.isFavourite == true) {
+                        if (t.isFavourite) {
                             selectedTeams.add(t);
                             Log.d(TAG, t.name + " " + t.isFavourite);
                         }

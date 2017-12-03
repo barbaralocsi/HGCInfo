@@ -9,7 +9,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
-public interface TeamApi {
+interface TeamApi {
     @GET("/teams/{teamid}/?format=json")
     Call<Team> getTeam(@Path("teamid") Integer teamId);
 

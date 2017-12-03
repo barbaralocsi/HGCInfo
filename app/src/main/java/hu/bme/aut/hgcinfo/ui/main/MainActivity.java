@@ -12,14 +12,14 @@ import hu.bme.aut.hgcinfo.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    int FRAGMENT_TEAMS = 0;
-    int FRAGMENT_FAVS = 1;
-    int FRAGMENT_SETTINGS = 2;
+    private int FRAGMENT_TEAMS = 0;
+    private int FRAGMENT_FAVS = 1;
+    private int FRAGMENT_SETTINGS = 2;
 
 
     private void changeFragment(int fragmentId) {
 
-        Fragment newFragment = null;
+        Fragment newFragment;
         Bundle bundle = new Bundle();
         if (fragmentId == FRAGMENT_TEAMS) {
             newFragment = new FragmentTeams();

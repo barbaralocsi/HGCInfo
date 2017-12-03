@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.teamdetails.TeamDetailsActivity"></activity>
+        <activity android:name=".ui.teamdetails.TeamDetailsActivity" />
 
         <meta-data android:name="DATABASE" android:value="hgc_info.db" />
         <meta-data android:name="VERSION" android:value="10" />

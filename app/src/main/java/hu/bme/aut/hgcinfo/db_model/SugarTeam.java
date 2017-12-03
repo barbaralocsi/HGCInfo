@@ -60,7 +60,7 @@ public class SugarTeam extends SugarRecord implements Serializable, Comparable<S
         return st;
     }
 
-    public void setFavouirte(boolean fav) {
+    public void setFavourite(boolean fav) {
         this.isFavourite = fav;
     }
 
@@ -74,9 +74,9 @@ public class SugarTeam extends SugarRecord implements Serializable, Comparable<S
 
     @Override
     public int compareTo(@NonNull SugarTeam sugarTeam) {
-        if (isHgc == true && sugarTeam.isHgc == true) return 0;
-        if (isHgc == false && sugarTeam.isHgc == false) return 0;
-        if (isHgc == true && sugarTeam.isHgc == false) return -1;
+        if (isHgc && sugarTeam.isHgc) return 0;
+        if (!isHgc && !sugarTeam.isHgc) return 0;
+        if (isHgc && !sugarTeam.isHgc) return -1;
         else return 1;
     }
 }

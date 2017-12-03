@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import hu.bme.aut.hgcinfo.db_model.SugarTeam;
 
 public final class HGCTeams {
-    public static final ArrayList<Integer> HGCEU = new ArrayList<Integer>() {{
+    private static final ArrayList<Integer> HGCEU = new ArrayList<Integer>() {{
         add(142);
         add(21);
         add(178);
@@ -15,7 +15,7 @@ public final class HGCTeams {
         add(208);
         add(149);
     }};
-    public static final ArrayList<Integer> HGCNA = new ArrayList<Integer>() {{
+    private static final ArrayList<Integer> HGCNA = new ArrayList<Integer>() {{
             add(188);
             add(147);
             add(36);
@@ -26,7 +26,7 @@ public final class HGCTeams {
             add(203);
     }};
 
-    public static final ArrayList<Integer> HGCKR = new ArrayList<Integer>() {{
+    private static final ArrayList<Integer> HGCKR = new ArrayList<Integer>() {{
             add(139);
             add(167);
             add(41);

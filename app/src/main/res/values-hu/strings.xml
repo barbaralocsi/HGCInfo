@@ -13,4 +13,6 @@
     <string name="anz">Ausztrália ÚZ</string>
     <string name="sea">Délkelet-Ázsia</string>
     <string name="la">Latin-Amerika</string>
+    <string name="action_favorites">Kedvencek</string>
+    <string name="pref_default_region">Alapértelmezett régió</string>
 </resources>

@@ -1,8 +1,6 @@
 package hu.bme.aut.hgcinfo.ui.main;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,8 +40,7 @@ public class TeamAdapter extends
       int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
           R.layout.item_team, parent, false);
-        TeamViewHolder viewHolder = new TeamViewHolder(view);
-        return viewHolder;
+        return new TeamViewHolder(view);
     }
 
     @Override
@@ -83,7 +80,6 @@ public class TeamAdapter extends
      * calls notifyDataSetChanged
      * @param newTeams
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void addTeams(List<SugarTeam> newTeams){
         // Bring HGC Teams to the front
         ArrayList<Integer> HGCteamIds = HGCTeams.getHGCTeams();
