@@ -147,12 +147,12 @@ public class TeamAdapter extends
 
         public TeamViewHolder(View itemView) {
             super(itemView);
-            nameTextView = 
-              (TextView) itemView.findViewById(
-              R.id.TeamItemNameTextView);
-            teamIcon = (ImageView) itemView.findViewById(
+            nameTextView =
+                    itemView.findViewById(
+                    R.id.TeamItemNameTextView);
+            teamIcon = itemView.findViewById(
               R.id.TeamItemImageView);
-            HGCSelector = (CheckBox) itemView.findViewById(
+            HGCSelector = itemView.findViewById(
                     R.id.HGCSelector);
             HGCSelector.setOnClickListener(new View.OnClickListener() {
                 @Override

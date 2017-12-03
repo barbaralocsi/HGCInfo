@@ -76,10 +76,10 @@ public class TeamDetailsActivity extends AppCompatActivity{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //avi= (AVLoadingIndicatorView) findViewById(R.id.avi);
-        loadingPanel = (RelativeLayout) findViewById(R.id.loadingPanel);
+        loadingPanel = findViewById(R.id.loadingPanel);
         stopAnim();
 
-        listOfRows = (LinearLayout) findViewById(R.id.list_of_rows);
+        listOfRows = findViewById(R.id.list_of_rows);
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
@@ -96,10 +96,10 @@ public class TeamDetailsActivity extends AppCompatActivity{
         for (SugarPlayer p: teamPlayers) {
             View rowItem = inflater.inflate(R.layout.player_row, loadingPanel, false);
 
-            ImageView photo = (ImageView) rowItem.findViewById(R.id.player_row_photo);
-            TextView nickName = (TextView) rowItem.findViewById(R.id.player_row_nick);
-            TextView realName = (TextView) rowItem.findViewById(R.id.player_row_real);
-            ImageView role = (ImageView) rowItem.findViewById(R.id.player_row_role);
+            ImageView photo = rowItem.findViewById(R.id.player_row_photo);
+            TextView nickName = rowItem.findViewById(R.id.player_row_nick);
+            TextView realName = rowItem.findViewById(R.id.player_row_real);
+            ImageView role = rowItem.findViewById(R.id.player_row_role);
 
             Glide.with(this)
                     .load(p.mediumPhoto)
