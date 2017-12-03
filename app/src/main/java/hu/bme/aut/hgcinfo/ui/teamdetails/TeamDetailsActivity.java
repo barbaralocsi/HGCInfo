@@ -136,8 +136,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
             public void onResponse(Call<PlayerList> call,
                                    Response<PlayerList> response) {
                 Log.e(TAG, "onResponse: " + response.code());
-                // TODO: beter solution?
-                removePlayers(); // Delete the players again
+                removePlayers();
 
                 stopAnim();
 
@@ -198,9 +197,6 @@ public class TeamDetailsActivity extends AppCompatActivity{
             loadTeamData();
             Log.e(TAG, "refresh");
         }
-        else if(id == R.id.action_favorites){
-            // TODO ez nem kell onCreateOptionsMenu-ben van kezelve
-        }
         else if (id == android.R.id.home) {
             Log.e(TAG, "back");
             finish();
@@ -225,7 +221,6 @@ public class TeamDetailsActivity extends AppCompatActivity{
     public void removePlayers(){
         removeAllFromDB();
         teamPlayers.clear();
-        //displayTeamData(); //TODO lehet eleg lenne csak a betoltesnel frissiteni a kepet?
     }
 
     private void removeAllFromDB(){
@@ -300,7 +295,7 @@ public class TeamDetailsActivity extends AppCompatActivity{
                 teamPlayers.add(player);
             }
         }
-        // If the database is empty try to ask the API instead -- TODO shoudnt this be in the onPostExecute?
+        // If the database is empty try to ask the API instead
         if(teamPlayers.isEmpty()){
             loadTeamData();
             return;

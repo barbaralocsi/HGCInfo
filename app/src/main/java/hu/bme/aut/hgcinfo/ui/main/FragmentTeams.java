@@ -123,7 +123,6 @@ public class FragmentTeams extends android.app.Fragment {
                     }
                 }
                 else{
-                    // TODO
                     for (SugarTeam t : teams) {
                         if (t.isFavourite == true) {
                             selectedTeams.add(t);

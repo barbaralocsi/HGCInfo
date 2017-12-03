@@ -80,7 +80,7 @@ public class TeamAdapter extends
     /**
      * Adds newTeams to the teams in an order
      * Order: Bring forward HGC teams
-     * calls notifyDataSetChanged <- TODO remove this?
+     * calls notifyDataSetChanged
      * @param newTeams
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
