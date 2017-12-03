@@ -1,8 +1,10 @@
 package hu.bme.aut.hgcinfo.ui.main;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -38,10 +40,17 @@ public class FragmentTeams extends android.app.Fragment {
     private TeamList teamList = null;
     private Boolean FULL;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FULL = getArguments().getBoolean("full");
-        setHasOptionsMenu(true);
+        if(FULL){
+            setHasOptionsMenu(true);
+        }
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        regionId = Integer.parseInt(sharedPref.getString(FragmentSettings.KEY_PREF_DEFAULT_REGION, "1"));
+
         View rootview = inflater.inflate(R.layout.fragment_teams_content,container,false);
         initRecyclerView(rootview);
         return rootview;
@@ -64,6 +73,12 @@ public class FragmentTeams extends android.app.Fragment {
                         showDetailsIntent.putExtra(
                                 TeamDetailsActivity.EXTRA_TEAM_ID, team.getId());
                         startActivity(showDetailsIntent);
+                    }
+
+                    @Override
+                    public void onTeamToHGC(SugarTeam sugarTeam, boolean b) {
+                        sugarTeam.setHGC(b);
+                        sugarTeam.save();
                     }
                 }, getActivity(),regionId);
         //Team ds = new Team();

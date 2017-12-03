@@ -1,5 +1,7 @@
 package hu.bme.aut.hgcinfo.db_model;
 
+import android.support.annotation.NonNull;
+
 import com.orm.SugarRecord;
 
 import java.io.Serializable;
@@ -9,7 +11,7 @@ import java.util.List;
 import hu.bme.aut.hgcinfo.model.team.Logo;
 import hu.bme.aut.hgcinfo.model.team.Team;
 
-public class SugarTeam extends SugarRecord implements Serializable
+public class SugarTeam extends SugarRecord implements Serializable, Comparable<SugarTeam>
 {
     public int teamId;
     public String name;
@@ -64,5 +66,17 @@ public class SugarTeam extends SugarRecord implements Serializable
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setHGC(boolean HGC) {
+        this.isHgc = HGC;
+    }
+
+    @Override
+    public int compareTo(@NonNull SugarTeam sugarTeam) {
+        if (isHgc == true && sugarTeam.isHgc == true) return 0;
+        if (isHgc == false && sugarTeam.isHgc == false) return 0;
+        if (isHgc == true && sugarTeam.isHgc == false) return -1;
+        else return 1;
     }
 }

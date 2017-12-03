@@ -5,6 +5,7 @@
     <string name="title_settings">Settings</string>
     <string name="refresh_teams">Refresh teams</string>
     <string name="region">Region</string>
+
     <string name="eu">Europe</string>
     <string name="na">North America</string>
     <string name="kr">South Korea</string>
@@ -13,5 +14,8 @@
     <string name="anz">Australia NZ</string>
     <string name="sea">Southeast Asia</string>
     <string name="la">Latin America</string>
+
     <string name="action_favorites">Favourite</string>
+    <string name="pref_default_region">Default region</string>
+    <string name="pref_syncConnectionTypes_default">a</string>
 </resources>

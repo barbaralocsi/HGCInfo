@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="pref_default_region2"
+        android:title="@string/pref_default_region"
+        android:dialogTitle="@string/pref_default_region"
+        android:entries="@array/pref_default_region_entries"
+        android:entryValues="@array/pref_default_region_values"
+        android:defaultValue="Europe"
+        android:summary="%s"/>
+</PreferenceScreen>

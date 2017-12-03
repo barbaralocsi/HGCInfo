@@ -30,12 +30,21 @@
         tools:text="TeamName"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
 
+    <CheckBox
+        android:id="@+id/HGCSelector"
+        android:layout_width="@dimen/small_image_width"
+        android:layout_height="@dimen/small_image_height"
+        android:layout_gravity="center"
+        android:button="@drawable/hgc_selector"
+        />
+
+    <!---
     <ImageView
         android:id="@+id/HGCImageView"
         android:layout_width="@dimen/small_image_width"
         android:layout_height="@dimen/small_image_height"
         android:layout_gravity="center"
         tools:src="@android:drawable/ic_menu_camera" />
-
+-->
 
 </LinearLayout>

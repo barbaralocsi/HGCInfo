@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_default_region_entries">
+        <item>@string/eu</item>
+        <item>@string/na</item>
+        <item>@string/kr</item>
+        <item>@string/ch</item>
+        <item>@string/tw</item>
+        <item>@string/anz</item>
+        <item>@string/sea</item>
+        <item>@string/la</item>
+    </string-array>
+    <string-array name="pref_default_region_values" >
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+</resources>

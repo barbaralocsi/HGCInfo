@@ -1,16 +1,20 @@
 package hu.bme.aut.hgcinfo.ui.main;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -54,10 +58,12 @@ public class TeamAdapter extends
 
         int teamId = teams.get(position).teamId;
         if(teams.get(position).isHgc){
-            holder.HGCImageView.setImageResource(R.drawable.ic_hgc);
+            holder.HGCSelector.setChecked(true);
+            //holder.HGCSelector.setImageResource(R.drawable.ic_hgc);
         }
         else{
-            holder.HGCImageView.setImageDrawable(null);
+            holder.HGCSelector.setChecked(false);
+            //holder.HGCSelector.setImageDrawable(null);
         }
     }
 
@@ -77,31 +83,32 @@ public class TeamAdapter extends
      * calls notifyDataSetChanged <- TODO remove this?
      * @param newTeams
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void addTeams(List<SugarTeam> newTeams){
         // Bring HGC Teams to the front
         ArrayList<Integer> HGCteamIds = HGCTeams.getHGCTeams();
         Iterator<SugarTeam> i = newTeams.iterator();
         ArrayList<SugarTeam> HGCTeams = new ArrayList<>();
         while (i.hasNext()) {
-            SugarTeam t = i.next(); // must be called before you can call i.remove()
-            if(HGCteamIds.contains(t.teamId)){
+            SugarTeam t = i.next();
+
+            if(tempHGCs.isEmpty() && HGCteamIds.contains(t.teamId)){
                 t.isHgc=true;
-                HGCTeams.add(t);
-                i.remove();
+            }
+            if(tempHGCs.contains(t.teamId)){
+                t.isHgc = true;
             }
             if(tempFavs.contains(t.teamId)){
                 t.isFavourite = true;
             }
         }
-        // HGC teams are in the begining, add the other to it
-        HGCTeams.addAll(newTeams);
-        List<SugarTeam> allTeams = HGCTeams;
+        Collections.sort(newTeams);
 
-        for (SugarTeam t: allTeams) {
+        for (SugarTeam t: newTeams) {
             t.save();
         }
 
-        teams.addAll(HGCTeams);
+        teams.addAll(newTeams);
         notifyDataSetChanged();
     }
 
@@ -111,11 +118,15 @@ public class TeamAdapter extends
     }
 
     private ArrayList<Integer> tempFavs = new ArrayList<>();
+    private ArrayList<Integer> tempHGCs = new ArrayList<>();
 
     public void removeTeams(){
         for (SugarTeam t: teams) {
             if(t.isFavourite){
                 tempFavs.add(t.teamId);
+            }
+            if(t.isHgc){
+                tempHGCs.add(t.teamId);
             }
         }
         removeAllFromDB();
@@ -133,7 +144,8 @@ public class TeamAdapter extends
 
         int position;
 
-        ImageView HGCImageView;
+        CheckBox HGCSelector;
+        //ImageView HGCImageView;
         TextView nameTextView;
         ImageView teamIcon;
 
@@ -144,8 +156,23 @@ public class TeamAdapter extends
               R.id.TeamItemNameTextView);
             teamIcon = (ImageView) itemView.findViewById(
               R.id.TeamItemImageView);
-            HGCImageView = (ImageView) itemView.findViewById(
-                    R.id.HGCImageView);
+            HGCSelector = (CheckBox) itemView.findViewById(
+                    R.id.HGCSelector);
+            HGCSelector.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(HGCSelector.isChecked()){
+                        HGCSelector.setChecked(true);
+                        listener.onTeamToHGC(teams.get(position), true);
+                    }
+                    else{
+                        HGCSelector.setChecked(false);
+                        listener.onTeamToHGC(teams.get(position), false);
+                    }
+                }
+            });
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -158,13 +185,22 @@ public class TeamAdapter extends
     }
 
     public void update(List<SugarTeam> newTeams) {
+
         teams.clear();
-
-
+        Collections.sort(newTeams);
         teams.addAll(newTeams); // direkt nem addteams hogy ne mentse ujra
         //addTeams(teams);
         notifyDataSetChanged();
     }
-
-
+/*
+    private Comparator<SugarTeam> comparator = new Comparator<SugarTeam>() {
+        @Override
+        public int compare(SugarTeam sugarTeam, SugarTeam t1) {
+            if (sugarTeam.isHgc == true && t1.isHgc == true) return 0;
+            if (sugarTeam.isHgc == false && t1.isHgc == false) return 0;
+            if (sugarTeam.isHgc == true && t1.isHgc == false) return -1;
+            else return 1;
+        }
+    };
+*/
 }
